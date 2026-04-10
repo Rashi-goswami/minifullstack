@@ -16,7 +16,21 @@ async function register() {
 
     alert("User Registered!");
 }
+const jwt = require('jsonwebtoken');
 
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email, password });
+
+    if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ id: user._id }, "secretkey");
+
+    res.json({ token });
+});
 // Get users
 async function getUsers() {
     const res = await fetch(`${API}/users`);
@@ -46,4 +60,22 @@ async function findMatches() {
         li.innerText = `${user.name} - ${user.skills}`;
         list.appendChild(li);
     });
+}
+
+async function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const res = await fetch(`${API}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    console.log(data);
+    alert("Login successful!");
 }

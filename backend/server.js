@@ -17,6 +17,7 @@ mongoose.connect('mongodb+srv://memoryoficarus:1234@cluster0.vs27cdu.mongodb.net
 const User = mongoose.model('User', {
     name: String,
     email: String,
+    password: String,
     skills: String
 });
 
@@ -26,7 +27,7 @@ const User = mongoose.model('User', {
 app.post('/register', async (req, res) => {
     const user = new User(req.body);
     await user.save();
-    res.json({ message: "User saved" });
+    res.json({ message: "User registered" });
 });
 
 // Get all users

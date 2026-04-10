@@ -36,3 +36,14 @@ app.get('/users', async (req, res) => {
 });
 
 app.listen(3000, () => console.log("Server running on port 3000"));
+
+// Find users with same skill
+app.get('/match/:skill', async (req, res) => {
+    const skill = req.params.skill;
+
+    const users = await User.find({
+        skills: { $regex: skill, $options: 'i' }
+    });
+
+    res.json(users);
+});

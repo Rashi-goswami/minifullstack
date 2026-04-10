@@ -31,3 +31,19 @@ async function getUsers() {
         list.appendChild(li);
     });
 }
+
+async function findMatches() {
+    const skill = document.getElementById('searchSkill').value;
+
+    const res = await fetch(`${API}/match/${skill}`);
+    const data = await res.json();
+
+    const list = document.getElementById('matchList');
+    list.innerHTML = "";
+
+    data.forEach(user => {
+        const li = document.createElement('li');
+        li.innerText = `${user.name} - ${user.skills}`;
+        list.appendChild(li);
+    });
+}
